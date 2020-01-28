@@ -1,4 +1,4 @@
-package com.jcs.todobackend;
+package ch.unifr.softeng.todobackend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

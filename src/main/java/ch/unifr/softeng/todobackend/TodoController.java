@@ -1,4 +1,4 @@
-package com.jcs.todobackend;
+package ch.unifr.softeng.todobackend;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;

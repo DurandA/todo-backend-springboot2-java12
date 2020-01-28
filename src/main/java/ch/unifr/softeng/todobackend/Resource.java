@@ -1,10 +1,10 @@
-package com.jcs.todobackend;
+package ch.unifr.softeng.todobackend;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
+//@XmlRootElement
 public class Resource<T> {
 
   private String url;
@@ -16,7 +16,7 @@ public class Resource<T> {
   }
 
   @JsonUnwrapped
-  @XmlAnyElement
+  //@XmlAnyElement
   public T getContent() {
     return content;
   }
