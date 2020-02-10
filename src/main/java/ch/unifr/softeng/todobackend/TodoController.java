@@ -32,24 +32,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/todos")
 public class TodoController {
 
-  private Map<UUID, Resource<Todo>> mapTodos = new HashMap<>();
+  private Map<UUID, Todo> mapTodos = new HashMap<>();
 
   @RequestMapping(method = GET)
-  public Collection<Resource<Todo>> listAll() {
+  public Collection<Todo> listAll() {
     return mapTodos.values();
   }
 
   @RequestMapping(method = GET, value = "/{todo-id}")
-  public HttpEntity<Resource<Todo>> get(@PathVariable("todo-id") UUID id) {
+  public HttpEntity<Todo> get(@PathVariable("todo-id") UUID id) {
     return respond(id);
   }
 
   @RequestMapping(method = POST)
-  public Resource<Todo> add(@RequestBody Todo todo) {
+  public Todo add(@RequestBody Todo todo) {
     var id = UUID.randomUUID();
-    Resource<Todo> resource = new Resource<>(todo, getHref(id));
-    mapTodos.put(id, resource);
-    return resource;
+    todo.setUrl(getHref(id));
+    mapTodos.put(id, todo);
+    return todo;
   }
 
   @RequestMapping(method = DELETE)
@@ -63,14 +63,14 @@ public class TodoController {
   }
 
   @RequestMapping(method = PATCH, value = "/{todo-id}")
-  public HttpEntity<Resource<Todo>> update(@PathVariable("todo-id") UUID id,
+  public HttpEntity<Todo> update(@PathVariable("todo-id") UUID id,
                                            @RequestBody Todo updatedTodo) {
-    mapTodos.computeIfPresent(id, (key, todoResource) ->
-        new Resource<>(todoResource.getContent().merge(updatedTodo), getHref(key)));
+    mapTodos.computeIfPresent(id, (key, todo) ->
+        todo.merge(updatedTodo));
     return respond(id);
   }
 
-  private HttpEntity<Resource<Todo>> respond(UUID todoId) {
+  private HttpEntity<Todo> respond(UUID todoId) {
     return Optional.ofNullable(mapTodos.get(todoId))
         .map(todo -> new ResponseEntity<>(todo, HttpStatus.OK))
         .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
